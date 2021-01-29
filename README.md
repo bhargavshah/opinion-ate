@@ -1,3 +1,11 @@
+# opinion-ate
+
+An app for tracking reviews of dishes served by different restaurants.
+
+Production: <https://vigilant-gates-4db7d8.netlify.app/>
+
+Dependencies are locked with a `yarn.lock` file, so please use `yarn` to install dependencies. `npm` won't work.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
