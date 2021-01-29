@@ -10,11 +10,11 @@ describe('Listing restaurants', () => {
         statusCode: 200,
         body: [
           {
-            id: 259,
+            id: 1,
             name: pastaPlace,
           },
           {
-            id: 260,
+            id: 2,
             name: sushiPlace,
           },
         ],
