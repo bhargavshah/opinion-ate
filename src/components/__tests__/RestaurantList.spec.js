@@ -43,9 +43,14 @@ describe('RestaurantList', () => {
       expect(queryByText('Sushi Place')).not.toBeNull();
     });
 
-    it('does not display the loading indicator when not loading', () => {
+    it('does not display the loading indicator', () => {
       const {queryByTestId} = context;
       expect(queryByTestId('loading-indicator')).toBeNull();
+    });
+
+    it('does not display error', () => {
+      const {queryByTestId} = context;
+      expect(queryByTestId('error')).toBeNull();
     });
   });
 
@@ -53,5 +58,11 @@ describe('RestaurantList', () => {
     renderWithProps({loading: true});
     const {queryByTestId} = context;
     expect(queryByTestId('loading-indicator')).not.toBeNull();
+  });
+
+  it('display error when loading fails', () => {
+    renderWithProps({error: true});
+    const {queryByTestId} = context;
+    expect(queryByTestId('error')).not.toBeNull();
   });
 });

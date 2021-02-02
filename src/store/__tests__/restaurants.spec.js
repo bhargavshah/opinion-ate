@@ -7,16 +7,44 @@ import restaurantReducer from '../restaurants/reducers';
 describe('Restaurants', () => {
   describe('loadRestaurants action', () => {
     describe('initially', () => {
+      let store;
+
+      beforeEach(() => {
+        const initialState = {};
+
+        store = createStore(
+          restaurantReducer,
+          initialState,
+          applyMiddleware(thunk),
+        );
+      });
+
       it('does not have loading flag set', () => {
+        expect(store.getState().loading).toEqual(false);
+      });
+
+      it('does not have error flag set', () => {
+        expect(store.getState().error).toEqual(false);
+      });
+    });
+
+    describe('while loading', () => {
+      it('sets a loading flag', () => {
+        const api = {
+          loadRestaurants: () => new Promise(() => {}),
+        };
+
         const initialState = {};
 
         const store = createStore(
           restaurantReducer,
           initialState,
-          applyMiddleware(thunk),
+          applyMiddleware(thunk.withExtraArgument(api)),
         );
 
-        expect(store.getState().loading).toEqual(false);
+        store.dispatch(loadRestaurants());
+
+        expect(store.getState().loading).toEqual(true);
       });
     });
 
@@ -59,25 +87,37 @@ describe('Restaurants', () => {
       it('clears the loading flag', () => {
         expect(store.getState().loading).toEqual(false);
       });
+
+      it('should not set the error flag', () => {
+        expect(store.getState().error).toEqual(false);
+      });
     });
 
-    describe('while loading', () => {
-      it('sets a loading flag', () => {
+    describe('when loading fails', () => {
+      let store;
+
+      beforeEach(() => {
         const api = {
-          loadRestaurants: () => new Promise(() => {}),
+          loadRestaurants: () => Promise.reject(),
         };
 
         const initialState = {};
 
-        const store = createStore(
+        store = createStore(
           restaurantReducer,
           initialState,
           applyMiddleware(thunk.withExtraArgument(api)),
         );
 
-        store.dispatch(loadRestaurants());
+        return store.dispatch(loadRestaurants());
+      });
 
-        expect(store.getState().loading).toEqual(true);
+      it('sets an error flag', () => {
+        expect(store.getState().error).toEqual(true);
+      });
+
+      it('clears the loading flag', () => {
+        expect(store.getState().loading).toEqual(false);
       });
     });
   });
