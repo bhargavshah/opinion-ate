@@ -8,6 +8,8 @@ const client = axios.create({
 const api = {
   loadRestaurants: () =>
     client.get('/restaurants').then(response => response.data),
+  createRestaurant: name =>
+    client.post('/restaurants', {name}).then(response => response.data),
 };
 
 export default api;
